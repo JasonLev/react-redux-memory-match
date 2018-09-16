@@ -10,8 +10,8 @@ class GameStatus extends Component {
   render() {
     return (
       <div>
-        <Button handleClick={this.props.startGame}/>
-        <Timer />
+        <Button handleClick={this.props.toggleGame} gameActive={this.props.gameActive} />
+        <Timer currentTime={0} gameActive={this.props.gameActive}/>
       </div>
     );
   }

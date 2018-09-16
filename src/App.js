@@ -9,11 +9,11 @@ class App extends Component {
     this.state = {
       active: false
     }
-    this.handleStart = this.handleStart.bind(this);
+    this.toggleGameChange = this.toggleGameChange.bind(this);
   }
-  handleStart(){
+  toggleGameChange(){
     this.setState({
-      active: true
+      active: !this.state.active
     })
   }
   render() {
@@ -22,8 +22,8 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Memory Match Game</h1>
         </header>
-        <GameStatus startGame={this.handleStart}/>
-        <Board />
+        <GameStatus toggleGame={this.toggleGameChange} gameActive={this.state.active} />
+        <Board gameActive={this.state.active} />
       </div>
     );
   }
