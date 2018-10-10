@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Timer from './Timer';
 import Button from './Button';
-import ResetButton from './ResetButton';
-
 
 class GameStatus extends Component {
   constructor(props){
@@ -30,7 +28,7 @@ class GameStatus extends Component {
     return (
       <div>
         <Button handleClick={this.toggleGame} gameActive={this.props.gameActive} />
-        <ResetButton handleReset={this.toggleReset}  />
+        <Button handleReset={this.toggleReset} reset={true} />
         <Timer initTime={0}
                gameActive={this.props.gameActive}
                reset={this.state.reset}

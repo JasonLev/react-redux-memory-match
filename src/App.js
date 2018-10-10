@@ -27,8 +27,8 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Memory Match Game</h1>
+          <GameStatus startGame={this.startGameChange} stopGame={this.stopGameChange} gameActive={this.state.active} />
         </header>
-        <GameStatus startGame={this.startGameChange} stopGame={this.stopGameChange} gameActive={this.state.active} />
         <Board gameActive={this.state.active} />
       </div>
     );

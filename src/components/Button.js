@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 function Button(props) {
-  return <button onClick={props.handleClick}>{props.gameActive ? "Pause Game" : "Start Game"}</button>
+  if (props.reset) {
+    return <button onClick={props.handleReset}>Reset</button>;
+  } else {
+    return <button onClick={props.handleClick}>{props.gameActive ? "Pause Game" : "Start Game"}</button>
+  }
 }
 export default Button;

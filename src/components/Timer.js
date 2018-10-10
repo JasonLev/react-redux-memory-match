@@ -39,7 +39,7 @@ class Timer extends Component {
     }
   }
   render() {
-    return <div>{this.state.time}</div>
+    return <div id="timer">{this.state.time}</div>
   }
 }
 
