@@ -28,13 +28,12 @@ class Timer extends Component {
     clearInterval(this.timerIntervalID);
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.gameActive) {
+    if (nextProps.gameStage === "started" || nextProps.gameStage === "active") {
       this.onStart()
     } else {
       this.onPause()
     }
     if (nextProps.reset) {
-      console.log("reset hit");
       this.reset();
     }
   }

@@ -18,9 +18,9 @@ class GameStatus extends Component {
     this.props.resetGame();
   }
   changeGame(){
-    if (this.props.gameActive) {
+    if (this.props.gameStage === "started" || this.props.gameStage === "active") {
       this.props.pauseGame();
-    } else if (this.props.gameStarted) {
+    } else if (this.props.gameStage === "paused") {
       this.props.resumeGame();
     } else {
       this.props.startGame();
@@ -30,11 +30,10 @@ class GameStatus extends Component {
     return (
       <div>
         <Button handleClick={this.changeGame}
-                gameStarted={this.props.gameStarted}
-                gameActive={this.props.gameActive} />
+                gameStage={this.props.gameStage} />
         <Button handleReset={this.toggleReset} resetBtn={true} />
         <Timer initTime={0}
-               gameActive={this.props.gameActive}
+               gameStage={this.props.gameStage}
                reset={this.state.reset}
                toggleReset={this.toggleReset} />
       </div>

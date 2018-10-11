@@ -7,34 +7,37 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      active: false,
-      started: false
+      stage: null
     }
     this.startGame = this.startGame.bind(this);
     this.resumeGame = this.resumeGame.bind(this);
     this.pauseGame = this.pauseGame.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.finishGame = this.finishGame.bind(this);
   }
   startGame(){
     this.setState({
-      active: true,
-      started: true
+      stage: "started"
     })
   }
   resumeGame(){
     this.setState({
-      active: true
+      stage: "active"
     })
   }
   pauseGame(){
     this.setState({
-      active: false
+      stage: "paused"
     })
   }
   resetGame(){
     this.setState({
-      active: false,
-      started: false
+      stage: null
+    })
+  }
+  finishGame(){
+    this.setState({
+      stage: "finished"
     })
   }
   render() {
@@ -46,10 +49,9 @@ class App extends Component {
                       pauseGame={this.pauseGame}
                       resumeGame={this.resumeGame}
                       resetGame={this.resetGame}
-                      gameStarted={this.state.started}
-                      gameActive={this.state.active} />
+                      gameStage={this.state.stage} />
         </header>
-        <Board gameActive={this.state.active} gameStarted={this.state.started} />
+        <Board gameStage={this.state.stage} />
       </div>
     );
   }

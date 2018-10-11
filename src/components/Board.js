@@ -33,23 +33,29 @@ class Board extends Component {
         {value: "king", img: king, flipped: false}],
       guess: null
     }
+    this.shuffleCards = this.shuffleCards.bind(this);
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.gameActive && nextProps.gameStarted) {
-      console.log("game started = resume");
-      this.shuffleCards()
-    } else {
-      console.log("gameActive or gameStarted was false");
+    if (nextProps.gameStage === "started") {
+      this.hideCards();
+      this.shuffleCards();
     }
   }
   hideCards(){
-
+    const squares = this.state.squares.slice();
+    squares.forEach(square => {
+      square.flipped = false;
+    });
+    this.setState({squares: squares});
   }
   shuffleCards(){
-    for (let i = this.state.squares.length - 1; i > 0; i--) {
+    console.log("shuffle");
+    const squares = this.state.squares.slice();
+    for (let i = squares.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
-      [this.state.squares[i], this.state.squares[j]] = [this.state.squares[j], this.state.squares[i]];
+      [squares[i], squares[j]] = [squares[j], squares[i]];
     }
+    this.setState({squares: squares});
   }
   squareClick(i){
     const squares = this.state.squares.slice();
@@ -57,12 +63,26 @@ class Board extends Component {
     this.setState({squares: squares});
   }
   render() {
-    let squares = this.state.squares.map((card, i) =>
-      <Square key={i}
-              img={card.img}
-              flip={card.flipped}
-              handleClick={() => this.squareClick(i)} />
-    );
+    let squares;
+    switch (this.props.gameStage) {
+      case "started":
+      case "active":
+        squares = this.state.squares.map((card, i) =>
+          <Square key={i}
+               img={card.img}
+               flip={card.flipped}
+               handleClick={() => this.squareClick(i)} />
+        )
+        break;
+      case "paused":
+        squares = 'Game Paused.  Press "Resume Game" to continue.  Press "Reset" to Start Over.';
+        break;
+      case "finished":
+        squares = 'Congratulations!  You won.  Press "Play Again" to try for a better score.';
+        break;
+      default:
+        squares = 'Press "Start Game" to begin.';
+    }
     return <main>{squares}</main>
   }
 }
