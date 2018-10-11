@@ -9,17 +9,19 @@ class GameStatus extends Component {
       reset: false,
     }
     this.toggleReset = this.toggleReset.bind(this);
-    this.toggleGame = this.toggleGame.bind(this);
+    this.changeGame = this.changeGame.bind(this);
   }
   toggleReset(){
     this.setState({
       reset: !this.state.reset
     });
-    this.props.stopGame();
+    this.props.resetGame();
   }
-  toggleGame(){
+  changeGame(){
     if (this.props.gameActive) {
-      this.props.stopGame();
+      this.props.pauseGame();
+    } else if (this.props.gameStarted) {
+      this.props.resumeGame();
     } else {
       this.props.startGame();
     }
@@ -27,8 +29,10 @@ class GameStatus extends Component {
   render() {
     return (
       <div>
-        <Button handleClick={this.toggleGame} gameActive={this.props.gameActive} />
-        <Button handleReset={this.toggleReset} reset={true} />
+        <Button handleClick={this.changeGame}
+                gameStarted={this.props.gameStarted}
+                gameActive={this.props.gameActive} />
+        <Button handleReset={this.toggleReset} resetBtn={true} />
         <Timer initTime={0}
                gameActive={this.props.gameActive}
                reset={this.state.reset}
