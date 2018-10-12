@@ -33,34 +33,53 @@ class Board extends Component {
         {value: "king", img: king, flipped: false}],
       guess: null
     }
-    this.shuffleCards = this.shuffleCards.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.gameStage === "started") {
-      this.hideCards();
-      this.shuffleCards();
+      // hide and shuffle the cards:
+      const squares = this.state.squares.slice();
+      squares.forEach(square => {
+        square.flipped = false;
+      });
+      for (let i = squares.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [squares[i], squares[j]] = [squares[j], squares[i]];
+      }
+      this.setState({squares: squares, guess: null});
     }
-  }
-  hideCards(){
-    const squares = this.state.squares.slice();
-    squares.forEach(square => {
-      square.flipped = false;
-    });
-    this.setState({squares: squares});
-  }
-  shuffleCards(){
-    console.log("shuffle");
-    const squares = this.state.squares.slice();
-    for (let i = squares.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [squares[i], squares[j]] = [squares[j], squares[i]];
-    }
-    this.setState({squares: squares});
   }
   squareClick(i){
     const squares = this.state.squares.slice();
-    squares[i].flipped = true;
-    this.setState({squares: squares});
+    if (!squares[i].flipped) {
+      // flip the card, then check for matching guess:
+      squares[i].flipped = true;
+      if (this.state.guess) {
+        if (this.state.guess === squares[i].value) {
+          // success, made a match, clear the guess and then check for finish:
+          this.setState({squares: squares, guess: null});
+          this.checkFinish();
+        } else {
+          // fail, not a match of guess; we need to flip both guesses:
+          this.setState({squares: squares});
+          setTimeout(() => {
+            squares[i].flipped = false;
+            for (let guess of squares) {
+              if (guess.value === this.state.guess) {
+                guess.flipped = false;
+              }
+            }
+            this.setState({squares: squares, guess: null});
+          }, 1200);
+        }
+      } else {
+        this.setState({squares: squares, guess: squares[i].value});
+      }
+    }
+  }
+  checkFinish(){
+    if (this.state.squares.every(card => card.flipped === true)) {
+      this.props.finish();
+    };
   }
   render() {
     let squares;

@@ -51,7 +51,7 @@ class App extends Component {
                       resetGame={this.resetGame}
                       gameStage={this.state.stage} />
         </header>
-        <Board gameStage={this.state.stage} />
+        <Board gameStage={this.state.stage} finish={this.finishGame}/>
       </div>
     );
   }
