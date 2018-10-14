@@ -82,27 +82,28 @@ class Board extends Component {
     };
   }
   render() {
-    let squares;
+    let main;
     switch (this.props.gameStage) {
       case "started":
       case "active":
-        squares = this.state.squares.map((card, i) =>
+        let squares = this.state.squares.map((card, i) =>
           <Square key={i}
                img={card.img}
                flip={card.flipped}
                handleClick={() => this.squareClick(i)} />
         )
+        main = <main>{squares}</main>
         break;
       case "paused":
-        squares = 'Game Paused.  Press "Resume Game" to continue.  Press "Reset" to Start Over.';
+        main = 'Game Paused.  Press "Resume Game" to continue.  Press "Reset" to Start Over.';
         break;
       case "finished":
-        squares = 'Congratulations!  You won.  Press "Play Again" to try for a better score.';
+        main = 'Congratulations!  You won.  Press "Play Again" to try for a better score.';
         break;
       default:
-        squares = 'Press "Start Game" to begin.';
+        main = 'Press "Start Game" to begin.';
     }
-    return <main>{squares}</main>
+    return <div>{main}</div>
   }
 }
 
