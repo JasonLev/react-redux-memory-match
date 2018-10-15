@@ -31,7 +31,11 @@ class GameStatus extends Component {
       <div>
         <Button handleClick={this.changeGame}
                 gameStage={this.props.gameStage} />
-        <Button handleReset={this.toggleReset} resetBtn={true} />
+        {(this.props.gameStage === "started" ||
+          this.props.gameStage === "active" ||
+          this.props.gameStage === "paused") &&
+          <Button handleReset={this.toggleReset} resetBtn={true} />
+        }
         <Timer initTime={0}
                gameStage={this.props.gameStage}
                reset={this.state.reset}
