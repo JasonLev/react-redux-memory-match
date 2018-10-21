@@ -82,7 +82,7 @@ main {
   background-color: blue;
   transform: rotateY(180deg);
 }
-.card.flipped {
+.flipped {
   transform: rotateY(180deg);
 }
 .back img {
