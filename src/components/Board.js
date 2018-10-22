@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Square from './Square';
+import Leaderboard from './Leaderboard';
 // import the images:
 import ace from '../img/1_diamond.png';
 import twoSpade from '../img/2_spade.png';
@@ -14,7 +15,6 @@ class Board extends Component {
   constructor(props){
     super(props);
     this.state = {
-      solved: false,
       squares: [{value: "ace", img: ace, flipped: false},
         {value: "ace", img: ace, flipped: false},
         {value: "deuce", img: twoSpade, flipped: false},
@@ -97,7 +97,11 @@ class Board extends Component {
         main = 'Game Paused.  Press "Resume Game" to continue.  Press "Reset" to Start Over.';
         break;
       case "finished":
-        main = 'Congratulations!  You won.  Press "Play Again" to try for a better score.';
+        main = (<div>
+                  <h2>Congratulations!  You won.  Press "Play Again" to try for a better score.</h2>
+                  <Leaderboard score={this.props.score} />
+                </div>
+               );
         break;
       default:
         main = 'Press "Start Game" to begin.';
