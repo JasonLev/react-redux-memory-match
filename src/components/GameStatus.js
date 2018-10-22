@@ -15,15 +15,15 @@ class GameStatus extends Component {
     this.setState({
       reset: !this.state.reset
     });
-    this.props.resetGame();
+    this.props.handleStageChange(null);
   }
   changeGame(){
     if (this.props.gameStage === "started" || this.props.gameStage === "active") {
-      this.props.pauseGame();
+      this.props.handleStageChange("paused");
     } else if (this.props.gameStage === "paused") {
-      this.props.resumeGame();
+      this.props.handleStageChange("active");
     } else {
-      this.props.startGame();
+      this.props.handleStageChange("started");
     }
   }
   render() {

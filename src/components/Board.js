@@ -78,7 +78,7 @@ class Board extends Component {
   }
   checkFinish(){
     if (this.state.squares.every(card => card.flipped === true)) {
-      this.props.finish();
+      this.props.finish("finished");
     };
   }
   render() {

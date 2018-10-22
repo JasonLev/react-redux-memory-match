@@ -9,35 +9,11 @@ class App extends Component {
     this.state = {
       stage: null
     }
-    this.startGame = this.startGame.bind(this);
-    this.resumeGame = this.resumeGame.bind(this);
-    this.pauseGame = this.pauseGame.bind(this);
-    this.resetGame = this.resetGame.bind(this);
-    this.finishGame = this.finishGame.bind(this);
+    this.changeStage = this.changeStage.bind(this);
   }
-  startGame(){
+  changeStage(stage){
     this.setState({
-      stage: "started"
-    })
-  }
-  resumeGame(){
-    this.setState({
-      stage: "active"
-    })
-  }
-  pauseGame(){
-    this.setState({
-      stage: "paused"
-    })
-  }
-  resetGame(){
-    this.setState({
-      stage: null
-    })
-  }
-  finishGame(){
-    this.setState({
-      stage: "finished"
+      stage: stage
     })
   }
   render() {
@@ -45,13 +21,9 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Memory Match Game</h1>
-          <GameStatus startGame={this.startGame}
-                      pauseGame={this.pauseGame}
-                      resumeGame={this.resumeGame}
-                      resetGame={this.resetGame}
-                      gameStage={this.state.stage} />
+          <GameStatus handleStageChange={this.changeStage} gameStage={this.state.stage} />
         </header>
-        <Board gameStage={this.state.stage} finish={this.finishGame}/>
+        <Board gameStage={this.state.stage} finish={this.changeStage} />
       </div>
     );
   }
