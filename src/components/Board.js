@@ -49,36 +49,35 @@ class Board extends Component {
     }
   }
   squareClick(i){
+    if (!this.state.squares[i].flipped) {
+      this.handleGuess(i);
+    }
+  }
+  handleGuess(i){
     const squares = this.state.squares.slice();
-    if (!squares[i].flipped) {
-      // flip the card, then check for matching guess:
-      squares[i].flipped = true;
-      if (this.state.guess) {
-        if (this.state.guess === squares[i].value) {
-          // success, made a match, clear the guess and then check for finish:
-          this.setState({squares: squares, guess: null});
-          this.checkFinish();
-        } else {
-          // fail, not a match of guess; we need to flip both guesses:
-          this.setState({squares: squares});
-          setTimeout(() => {
-            squares[i].flipped = false;
-            for (let guess of squares) {
-              if (guess.value === this.state.guess) {
-                guess.flipped = false;
-              }
-            }
-            this.setState({squares: squares, guess: null});
-          }, 1200);
-        }
+    // flip the card, then check for matching guess:
+    squares[i].flipped = true;
+    if (this.state.guess !== null) {
+      if (squares[this.state.guess].value === squares[i].value) {
+        // success, made a match, clear the guess and then check for finish:
+        this.setState({squares: squares, guess: null});
+        this.checkFinish();
       } else {
-        this.setState({squares: squares, guess: squares[i].value});
+        // fail, not a match of guess; we need to flip both guesses:
+        this.setState({squares: squares});
+        setTimeout(() => {
+          squares[i].flipped = false;
+          squares[this.state.guess].flipped = false;
+          this.setState({squares: squares, guess: null});
+        }, 1200);
       }
+    } else {
+      this.setState({squares: squares, guess: i});
     }
   }
   checkFinish(){
     if (this.state.squares.every(card => card.flipped === true)) {
-      this.props.finish();
+      this.props.finish("finished");
     };
   }
   render() {
