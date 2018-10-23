@@ -6,24 +6,33 @@ class Leaderboard extends Component {
     this.state = {
       highScores: []
     }
-    //this.changeStage = this.changeStage.bind(this);
+    this.compareScore = this.compareScore.bind(this);
   }
-  componentDidMount() {
-    if (this.props.score) {
-      this.compareScore(this.props.score);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.score) {
+      this.compareScore(nextProps.score);
     }
   }
   compareScore(score){
-    console.log("compare score");
-    let scores = [...this.state.highScores]
-    if (scores.length) {
-      console.log(score);
+    let scores = [...this.state.highScores];
+    if (scores.some(leaderScore => score < leaderScore)) {
+      for (let i = 0; i < scores.length; i++) {
+        console.log("testing... " + scores[i]);
+        if (score < scores[i]) {
+          scores.splice(i,0,score);
+          break;
+        }
+      }
+      console.log("on the leaderboard");
     } else {
       scores.push(score);
-      this.setState({
-        highScores: scores
-      });
+      console.log("new score");
     }
+    console.log("scores are ", scores);
+    let top10 = scores.slice(11);
+    this.setState({
+      highScores: top10
+    });
   }
   render() {
     let leaderScores;
