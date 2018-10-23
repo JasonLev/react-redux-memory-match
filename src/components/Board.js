@@ -94,7 +94,12 @@ class Board extends Component {
         main = <main>{squares}</main>
         break;
       case "paused":
-        main = 'Game Paused.  Press "Resume Game" to continue.  Press "Reset" to Start Over.';
+        main = (<div>
+                  <h2>Game Paused.</h2>
+                  <h3>Press "Resume Game" to continue.  Press "Reset" to Start Over.</h3>
+                  <Leaderboard score={null} />
+                </div>
+               );
         break;
       case "finished":
         main = (<div>
@@ -104,7 +109,11 @@ class Board extends Component {
                );
         break;
       default:
-        main = 'Press "Start Game" to begin.';
+        main = (<div>
+                  <h2>Press "Start Game" to begin.</h2>
+                  <Leaderboard score={null} />
+                </div>
+               );
     }
     return <div>{main}</div>
   }

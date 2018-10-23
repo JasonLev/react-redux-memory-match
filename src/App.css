@@ -89,3 +89,24 @@ main {
   height: 100%;
   width: 100%;
 }
+/* leaderboard */
+ul.leaderlist {
+  border: 1px solid;
+  width: 80%;
+  margin: auto;
+  box-shadow: 0 0 8px 1px;
+}
+li {
+  margin: 0.53em;
+  list-style-type: none;
+}
+li.leader-highlight {
+  border: 1px solid;
+  width: fit-content;
+  padding: 1em;
+  background-color: yellow;
+  margin: auto;
+}
+.leader-score {
+  margin-left: 3em;
+}
