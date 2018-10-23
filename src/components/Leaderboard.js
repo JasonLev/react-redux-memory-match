@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import LeaderForm from './LeaderForm';
 
 let highScores = [];
 class Leaderboard extends Component {
   constructor(props){
     super(props);
     this.state = {
-      highScores: highScores
+      highScores: highScores,
+      newHighScore: false
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -25,12 +27,21 @@ class Leaderboard extends Component {
           break;
         }
       }
-    } else {
+    } else if (scores.length < 10) {
       scores.push(score);
+    } else {
+      return
     }
     let top10 = scores.slice(0,10);
     this.setState({
-      highScores: top10
+      highScores: top10,
+      newHighScore: true
+    });
+  }
+  submitForm(data) {
+    console.log("data", data);
+    this.setState({
+      newHighScore: false 
     });
   }
   render() {
@@ -52,7 +63,11 @@ class Leaderboard extends Component {
     }
     return (
       <div>
-        <div>{leaderScores}</div>
+        {this.props.score && (this.state.newHighScore ?
+          <LeaderForm onSubmit={this.submitForm}/> :
+          <h3>Your score wasn't fast enough for the leaderboard.  Good luck next time.</h3>
+        )}
+        {leaderScores}
       </div>
     );
   }

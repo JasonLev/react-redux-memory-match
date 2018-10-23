@@ -103,8 +103,8 @@ class Board extends Component {
         break;
       case "finished":
         main = (<div>
-                  <h2>Congratulations!  You won.  Press "Play Again" to try for a better score.</h2>
                   <Leaderboard score={this.props.score} />
+                  <h2>Press "Play Again" to try for a better score.</h2>
                 </div>
                );
         break;
