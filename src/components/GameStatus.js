@@ -39,6 +39,7 @@ class GameStatus extends Component {
         <Timer initTime={0}
                gameStage={this.props.gameStage}
                reset={this.state.reset}
+               changeScore={this.props.handleScoreChange}
                toggleReset={this.toggleReset} />
       </div>
     );

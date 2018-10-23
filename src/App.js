@@ -7,13 +7,20 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      stage: null
+      stage: null,
+      currentScore: null
     }
     this.changeStage = this.changeStage.bind(this);
+    this.changeScore = this.changeScore.bind(this);
   }
   changeStage(stage){
     this.setState({
       stage: stage
+    })
+  }
+  changeScore(score){
+    this.setState({
+      currentScore: score
     })
   }
   render() {
@@ -21,9 +28,13 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Memory Match Game</h1>
-          <GameStatus handleStageChange={this.changeStage} gameStage={this.state.stage} />
+          <GameStatus handleStageChange={this.changeStage}
+                      handleScoreChange={this.changeScore}
+                      gameStage={this.state.stage} />
         </header>
-        <Board gameStage={this.state.stage} finish={this.changeStage} />
+        <Board gameStage={this.state.stage}
+               score={this.state.currentScore}
+               finish={this.changeStage} />
       </div>
     );
   }
