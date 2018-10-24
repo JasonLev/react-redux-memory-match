@@ -37,7 +37,7 @@ class Board extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.gameStage === "started") {
       // hide and shuffle the cards:
-      const squares = this.state.squares.slice();
+      const squares = this.state.squares;
       squares.forEach(square => {
         square.flipped = false;
       });
@@ -83,9 +83,6 @@ class Board extends Component {
         squares[this.state.guess].flipped = false;
         this.setState({squares: squares, guess: null});
       }, 1200);
-      // squares[i].flipped = false;
-      // squares[this.state.guess].flipped = false;
-      // this.setState({squares: squares, guess: null});
     }
   }
   checkFinish(){
