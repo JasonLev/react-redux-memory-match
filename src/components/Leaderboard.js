@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LeaderForm from './LeaderForm';
+import LeaderList from './LeaderList';
 
 let highScores = [];
 class Leaderboard extends Component {
@@ -7,8 +8,11 @@ class Leaderboard extends Component {
     super(props);
     this.state = {
       highScores: highScores,
-      newHighScore: false
+      isHighScore: false,
+      newHighScoreIndex: null,
+      formSubmitted: false
     }
+    this.submitForm = this.submitForm.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.score) {
@@ -19,55 +23,53 @@ class Leaderboard extends Component {
     highScores = this.state.highScores;
   }
   compareScore(score){
-    let scores = [...this.state.highScores];
-    if (scores.some(leaderScore => score < leaderScore)) {
+    let scores = this.state.highScores;
+    if (scores.some(leaderScore => score < leaderScore.score)) {
       for (let i = 0; i < scores.length; i++) {
-        if (score < scores[i]) {
-          scores.splice(i,0,score);
+        if (score < scores[i].score) {
+          this.setState({
+            newHighScoreIndex: i,
+            isHighScore: true
+          });
           break;
         }
       }
     } else if (scores.length < 10) {
-      scores.push(score);
-    } else {
-      return
+      this.setState({
+        isHighScore: true,
+        newHighScoreIndex: scores.length
+      });
     }
-    let top10 = scores.slice(0,10);
-    this.setState({
-      highScores: top10,
-      newHighScore: true
-    });
   }
   submitForm(data) {
-    console.log("data", data);
+    let scores = [...this.state.highScores];
+    let top10;
+    if (scores.length) {
+      scores.splice(this.state.newHighScoreIndex,0,{score: this.props.score, name: data});
+      top10 = scores.slice(0,10);
+    } else {
+      scores.push({score: this.props.score, name: data});
+      top10 = scores;
+    }
     this.setState({
-      newHighScore: false 
+      highScores: top10,
+      isHighScore: false,
+      formSubmitted: true
     });
   }
   render() {
-    let leaderScores;
-    if (this.state.highScores.length) {
-      let leaderList = this.state.highScores.map(
-        (score, i) => {
-          return (<li key={i} className={score === this.props.score ? "leader-highlight":"leader-LI"}>
-                    <span>{i + 1}.</span><span className="leader-score">{score}</span>
-                  </li>);
-        }
-      );
-      leaderScores = (<ul className="leaderlist">
-                        <h3>Leaderboard:</h3>
-                        {leaderList}
-                      </ul>);
-    } else {
-      leaderScores= <h3>The Leaderboard is currently empty.  Join the Leaderboard by completing the game!</h3>;
-    }
     return (
       <div>
-        {this.props.score && (this.state.newHighScore ?
-          <LeaderForm onSubmit={this.submitForm}/> :
-          <h3>Your score wasn't fast enough for the leaderboard.  Good luck next time.</h3>
+        {this.props.score && (this.state.isHighScore ?
+          <LeaderForm onSubmit={this.submitForm} rank={this.state.newHighScoreIndex + 1} /> :
+          this.state.formSubmitted ?
+            <h3>Form submitted.  See yourself on the new leaderboard:</h3> :
+            <h3>Your score wasn't fast enough for the leaderboard.  Good luck next time.</h3>
         )}
-        {leaderScores}
+        {!this.state.isHighScore && (this.state.highScores.length ?
+          <LeaderList score={this.props.score} highScores={this.state.highScores} /> :
+          <h3>The Leaderboard is currently empty.  Join the Leaderboard by completing the game!</h3>
+        )}
       </div>
     );
   }

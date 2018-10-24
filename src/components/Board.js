@@ -57,7 +57,7 @@ class Board extends Component {
     const squares = this.state.squares.slice();
     // flip the card, then check for matching guess:
     squares[i].flipped = true;
-    if (this.state.guess !== null) {
+    if (this.state.guess != null) {
       if (squares[this.state.guess].value === squares[i].value) {
         // success, made a match, clear the guess and then check for finish:
         this.setState({squares: squares, guess: null});
