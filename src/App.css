@@ -95,18 +95,48 @@ ul.leaderlist {
   width: 80%;
   margin: auto;
   box-shadow: 0 0 8px 1px;
+  padding: 1em;
 }
 li {
   margin: 0.53em;
   list-style-type: none;
 }
 li.leader-highlight {
-  border: 1px solid;
   width: fit-content;
   padding: 1em;
   background-color: yellow;
   margin: auto;
 }
-.leader-score {
+.leader-score, .leader-name {
   margin-left: 3em;
+}
+.leader-span {
+  font-size: 1.5em;
+  width: 4em;
+  padding: 1em;
+}
+.leader-name {
+  letter-spacing: 1.5em;
+}
+.leader-form {
+  margin: 2em auto;
+  box-shadow: 0 0 2px 2px;
+  width: 80%;
+  padding: 1em;
+}
+.leader-form label {
+  font-size: 1.25em;
+}
+#initials {
+  width: 4em;
+  padding: 1em;
+  margin: 1em;
+  font-size: 1.5em;
+  letter-spacing: 0.5em;
+}
+.leader-form button {
+  padding: 1em;
+  background-color: lightgreen;
+  font-size: 1.25em;
+  border-radius: 5%;
 }
