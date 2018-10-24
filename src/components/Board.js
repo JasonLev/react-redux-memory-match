@@ -37,7 +37,7 @@ class Board extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.gameStage === "started") {
       // hide and shuffle the cards:
-      const squares = this.state.squares.slice();
+      const squares = this.state.squares;
       squares.forEach(square => {
         square.flipped = false;
       });
@@ -54,25 +54,35 @@ class Board extends Component {
     }
   }
   handleGuess(i){
-    const squares = this.state.squares.slice();
+    const squares = this.state.squares;
     // flip the card, then check for matching guess:
     squares[i].flipped = true;
-    if (this.state.guess != null) {
-      if (squares[this.state.guess].value === squares[i].value) {
-        // success, made a match, clear the guess and then check for finish:
-        this.setState({squares: squares, guess: null});
-        this.checkFinish();
-      } else {
-        // fail, not a match of guess; we need to flip both guesses:
-        this.setState({squares: squares});
-        setTimeout(() => {
-          squares[i].flipped = false;
-          squares[this.state.guess].flipped = false;
-          this.setState({squares: squares, guess: null});
-        }, 1200);
-      }
+    this.setState({squares: squares});
+    if (this.state.guess == null) {
+      this.assignGuess(i);
     } else {
-      this.setState({squares: squares, guess: i});
+      this.checkGuessMatch(i);
+    }
+  }
+  assignGuess(i){
+    this.setState({guess: i});
+  }
+  checkGuessMatch(i){
+    const squares = this.state.squares;
+    if (squares[this.state.guess].value === squares[i].value) {
+      // success, made a match, clear the guess and then check for finish:
+      this.setState({guess: null});
+      this.checkFinish();
+    } else {
+      // fail, not a match of guess; we need to flip both guesses:
+      setTimeout(() => {
+        if (this.state.guess == null) {
+          return this.assignGuess(i);
+        }
+        squares[i].flipped = false;
+        squares[this.state.guess].flipped = false;
+        this.setState({squares: squares, guess: null});
+      }, 1200);
     }
   }
   checkFinish(){
