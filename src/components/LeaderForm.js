@@ -12,7 +12,7 @@ class LeaderForm extends React.Component {
 
   submitHandler(e) {
     e.preventDefault();
-    this.props.onSubmit(this.state.inputField.trim().toUpperCase());
+    this.props.onSubmit(this.state.inputField.trim());
 
     this.setState({
       inputField: ''
@@ -21,7 +21,7 @@ class LeaderForm extends React.Component {
 
   handleChange(event) {
     this.setState({
-      inputField: event.target.value
+      inputField: event.target.value.toUpperCase()
     });
   }
   render() {
@@ -35,7 +35,7 @@ class LeaderForm extends React.Component {
                  autoFocus
                  type="text"
                  value={this.state.inputField}
-                 placeholder="* * *"
+                 placeholder="***"
                  maxLength="3"
                  required
                  pattern="[A-Za-z]{3}"
