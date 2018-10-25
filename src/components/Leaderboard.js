@@ -63,11 +63,11 @@ class Leaderboard extends Component {
         {this.props.score && (this.state.isHighScore ?
           <LeaderForm onSubmit={this.submitForm} rank={this.state.newHighScoreIndex + 1} /> :
           this.state.formSubmitted ?
-            <h3>Form submitted.  See yourself on the new leaderboard:</h3> :
+            <h3>Here's the new leaderboard:</h3> :
             <h3>Your score wasn't fast enough for the leaderboard.  Good luck next time.</h3>
         )}
         {!this.state.isHighScore && (this.state.highScores.length ?
-          <LeaderList score={this.props.score} highScores={this.state.highScores} /> :
+          <LeaderList index={this.state.newHighScoreIndex} highScores={this.state.highScores} /> :
           <h3>The Leaderboard is currently empty.  Join the Leaderboard by completing the game!</h3>
         )}
       </div>
