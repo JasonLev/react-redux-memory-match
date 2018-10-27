@@ -6,7 +6,7 @@ function LeaderList(props) {
       return (<li key={i} className={i === props.index && "leader-highlight"}>
                 <span className="leader-span">{i + 1}.</span>
                 <span className="leader-name leader-span">{score.name}</span>
-                <span className="leader-score leader-span">{score.score}</span>
+                <span className="leader-score leader-span">{Math.floor(score.score/60)}:{score.score%60}</span>
               </li>);
     }
   );
