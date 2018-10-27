@@ -38,9 +38,9 @@ class LeaderForm extends React.Component {
                  placeholder="***"
                  maxLength="3"
                  required
-                 pattern="[A-Za-z]{3}"
+                 pattern="[A-Za-z]{1,3}"
                  onChange={this.handleChange}/>
-          <button type="submit">Enter Initials</button>
+          <button type="submit" className={this.state.inputField ? "btn-input-valid" : "btn-input-invalid"}>Enter Initials</button>
         </form>
       </div>
     );

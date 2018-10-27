@@ -138,8 +138,19 @@ li.leader-highlight {
   font-family: monospace;
 }
 .leader-form button {
+  border-radius: 5%;
+}
+.leader-form .btn-input-invalid {
+  cursor: not-allowed;
+  padding: 0.8em;
+  background-color: grey;
+  font-size: 1.05em;
+  transition: all 1s ease-in-out;
+}
+.leader-form .btn-input-valid {
+  cursor: pointer;
   padding: 1em;
   background-color: lightgreen;
   font-size: 1.25em;
-  border-radius: 5%;
+  transition: all 1s ease-in-out;
 }
