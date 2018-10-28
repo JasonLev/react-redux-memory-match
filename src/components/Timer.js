@@ -61,9 +61,12 @@ class Timer extends Component {
       this.props.toggleReset();
     }
   }
-  render() {
+  displayTime(){
     let seconds = this.state.time % 60;
-    return <div id="timer">{Math.floor(this.state.time/60)}:{seconds < 10 ? "0" + seconds : seconds}</div>
+    return `${Math.floor(this.state.time/60)}:${seconds < 10 ? "0" + seconds : seconds}`;
+  }
+  render() {
+    return <div id="timer">{this.displayTime()}</div>
   }
 }
 

@@ -8,38 +8,41 @@ class Leaderboard extends Component {
     super(props);
     this.state = {
       highScores: highScores,
-      isHighScore: false,
+      renderForm: false,
       newHighScoreIndex: null,
       formSubmitted: false
     }
     this.submitForm = this.submitForm.bind(this);
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.score) {
-      this.compareScore(nextProps.score);
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.score !== this.props.score) {
+      this.compareScore(this.props.score);
     }
   }
   componentWillUnmount() {
     highScores = this.state.highScores;
   }
   compareScore(score){
-    let scores = this.state.highScores;
-    if (scores.some(leaderScore => score < leaderScore.score)) {
-      for (let i = 0; i < scores.length; i++) {
-        if (score < scores[i].score) {
+    let leaderScores = this.state.highScores;
+    if (leaderScores.some(leaderScore => score < leaderScore.score)) {
+      for (let i = 0; i < leaderScores.length; i++) {
+        if (score < leaderScores[i].score) {
           this.setState({
             newHighScoreIndex: i,
-            isHighScore: true
+            renderForm: true
           });
           break;
         }
       }
-    } else if (scores.length < 10) {
+    } else if (leaderScores.length < 10) {
       this.setState({
-        isHighScore: true,
-        newHighScoreIndex: scores.length
+        renderForm: true,
+        newHighScoreIndex: leaderScores.length
       });
     }
+    // else {
+    //
+    // }
   }
   submitForm(data) {
     let scores = [...this.state.highScores];
@@ -53,20 +56,25 @@ class Leaderboard extends Component {
     }
     this.setState({
       highScores: top10,
-      isHighScore: false,
+      renderForm: false,
       formSubmitted: true
     });
+  }
+  renderForm(){
+    if (this.state.renderForm) {
+      return <LeaderForm onSubmit={this.submitForm} rank={this.state.newHighScoreIndex + 1} />;
+    } else {
+      return (this.state.formSubmitted ?
+        <h3>Here's the new leaderboard:</h3> :
+        <h3>Your score wasn't fast enough for the leaderboard.  Good luck next time.</h3>
+      );
+    }
   }
   render() {
     return (
       <div>
-        {this.props.score && (this.state.isHighScore ?
-          <LeaderForm onSubmit={this.submitForm} rank={this.state.newHighScoreIndex + 1} /> :
-          this.state.formSubmitted ?
-            <h3>Here's the new leaderboard:</h3> :
-            <h3>Your score wasn't fast enough for the leaderboard.  Good luck next time.</h3>
-        )}
-        {!this.state.isHighScore && (this.state.highScores.length ?
+        {this.props.score && (this.renderForm())}
+        {!this.state.renderForm && (this.state.highScores.length ?
           <LeaderList index={this.state.newHighScoreIndex} highScores={this.state.highScores} /> :
           <h3>The Leaderboard is currently empty.  Join the Leaderboard by completing the game!</h3>
         )}
