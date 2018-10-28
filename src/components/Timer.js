@@ -62,7 +62,8 @@ class Timer extends Component {
     }
   }
   render() {
-    return <div id="timer">{this.state.time}</div>
+    let seconds = this.state.time % 60;
+    return <div id="timer">{Math.floor(this.state.time/60)}:{seconds < 10 ? "0" + seconds : seconds}</div>
   }
 }
 
