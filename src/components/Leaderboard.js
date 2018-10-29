@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LeaderForm from './LeaderForm';
 import LeaderLists from './LeaderLists';
+import DifficultySelector from './DifficultySelector';
 
 let highScoreLists = {};
 class Leaderboard extends Component {
@@ -13,6 +14,7 @@ class Leaderboard extends Component {
       formSubmitted: false
     }
     this.submitForm = this.submitForm.bind(this);
+    this.changeDifficulty = this.changeDifficulty.bind(this);
   }
   componentDidUpdate(prevProps) {
     if (prevProps.score !== this.props.score) {
@@ -68,6 +70,10 @@ class Leaderboard extends Component {
       renderForm: false,
       formSubmitted: true
     });
+    this.props.changeDifficultySelect("difficultyMutable", true);
+  }
+  changeDifficulty(e){
+    this.props.changeDifficultySelect("difficulty", e.target.value);
   }
   renderForm(){
     if (this.state.renderForm) {
@@ -88,11 +94,20 @@ class Leaderboard extends Component {
       return <h3>The Leaderboards are currently empty.  Join the Leaderboards by completing one of the games!</h3>;
     }
   }
+  renderDifficultySelect(){
+    return (
+      <div>
+        <h3>Optionally, before you play again, you can change the difficulty level:</h3>
+        <DifficultySelector handleDifficulty={this.changeDifficulty} difficulty={this.props.difficulty} />
+      </div>
+    );
+  }
   render() {
     return (
       <div>
         {this.props.score && this.renderForm()}
         {!this.state.renderForm && this.renderList()}
+        {!this.state.renderForm && this.props.difficultyMutable && this.renderDifficultySelect()}
       </div>
     );
   }

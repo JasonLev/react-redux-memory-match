@@ -6,7 +6,7 @@ function LeaderLists(props) {
     ([difficultyLevel, scores], i) => {
       let diffLevelCapitalized = difficultyLevel[0].toUpperCase() + difficultyLevel.slice(1);
       return (
-        <li key={i} className={difficultyLevel === props.difficulty ? "leaderlist" : undefined}>
+        <li key={i} className={difficultyLevel === props.difficulty ? "current-leaderlist" : undefined}>
           <h4>{diffLevelCapitalized}:</h4>
           <LeaderList scores={scores} index={difficultyLevel === props.difficulty ? props.index : undefined}/>
         </li>

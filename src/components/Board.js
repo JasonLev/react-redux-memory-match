@@ -102,7 +102,7 @@ class Board extends Component {
   }
   checkFinish(){
     if (this.state.squares.every(card => card.flipped === true)) {
-      this.props.finish("stage","finished");
+      this.props.changeGame("stage","finished");
     };
   }
   render() {
@@ -128,7 +128,10 @@ class Board extends Component {
         break;
       case "finished":
         main = (<div>
-                  <Leaderboard score={this.props.score} difficulty={this.props.difficulty}/>
+                  <Leaderboard score={this.props.score}
+                               difficulty={this.props.difficulty}
+                               difficultyMutable={this.props.difficultyMutable}
+                               changeDifficultySelect={this.props.changeGame} />
                   <h2>Press "Play Again" to try for a better score.</h2>
                 </div>
                );

@@ -29,6 +29,7 @@ class GameHeader extends Component {
       this.props.handleChange("stage","active");
     } else {
       this.props.handleChange("stage","started");
+      this.props.handleChange("score",null);
     }
   }
   render() {

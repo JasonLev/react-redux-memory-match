@@ -9,7 +9,8 @@ class App extends Component {
     this.state = {
       stage: null,
       difficulty: "easy",
-      score: null
+      score: null,
+      difficultyMutable: false
     }
     this.changeGame = this.changeGame.bind(this);
   }
@@ -29,8 +30,9 @@ class App extends Component {
         </header>
         <Board gameStage={this.state.stage}
                score={this.state.score}
+               difficultyMutable={this.state.difficultyMutable}
                difficulty={this.state.difficulty}
-               finish={this.changeGame} />
+               changeGame={this.changeGame} />
       </div>
     );
   }
