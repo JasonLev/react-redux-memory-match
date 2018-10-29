@@ -1,26 +1,22 @@
 import React, { Component } from 'react';
 import './App.css';
 import Board from './components/Board';
-import GameStatus from './components/GameStatus';
+import GameHeader from './components/GameHeader';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       stage: null,
-      currentScore: null
+      difficulty: "easy",
+      score: null,
+      difficultyMutable: false
     }
-    this.changeStage = this.changeStage.bind(this);
-    this.changeScore = this.changeScore.bind(this);
+    this.changeGame = this.changeGame.bind(this);
   }
-  changeStage(stage){
+  changeGame(k,v){
     this.setState({
-      stage: stage
-    })
-  }
-  changeScore(score){
-    this.setState({
-      currentScore: score
+      [k]: v
     })
   }
   render() {
@@ -28,13 +24,15 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Memory Match Game</h1>
-          <GameStatus handleStageChange={this.changeStage}
-                      handleScoreChange={this.changeScore}
-                      gameStage={this.state.stage} />
+          <GameHeader handleChange={this.changeGame}
+                      gameStage={this.state.stage}
+                      difficulty={this.state.difficulty} />
         </header>
         <Board gameStage={this.state.stage}
-               score={this.state.currentScore}
-               finish={this.changeStage} />
+               score={this.state.score}
+               difficultyMutable={this.state.difficultyMutable}
+               difficulty={this.state.difficulty}
+               changeGame={this.changeGame} />
       </div>
     );
   }

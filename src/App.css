@@ -27,6 +27,13 @@
   font-size: 5em;
 }
 
+.difficulty-row {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+.difficulty-row>label {
+  margin-right: 1em;
+}
 /* Game Board: */
 main {
   width: 600px;
@@ -90,7 +97,15 @@ main {
   width: 100%;
 }
 /* leaderboard */
+.current-leaderlist{
+  transform: scale(1.1);
+  transition: all 200ms ease-in-out;
+}
+.current-leaderlist ul.leaderlist {
+  background-color: #fff;
+}
 ul.leaderlist {
+  background-color: rgb(141, 151, 161);
   border: 1px solid;
   width: 80%;
   margin: auto;

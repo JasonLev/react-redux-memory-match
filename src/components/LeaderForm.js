@@ -13,7 +13,6 @@ class LeaderForm extends React.Component {
   submitHandler(e) {
     e.preventDefault();
     this.props.onSubmit(this.state.inputField.trim());
-
     this.setState({
       inputField: ''
     });
@@ -25,9 +24,10 @@ class LeaderForm extends React.Component {
     });
   }
   render() {
+    const difficultyCapitalized = this.props.difficulty[0].toUpperCase() + this.props.difficulty.slice(1);
     return (
       <div>
-        <h3>Congratulations! You'll join the Leaderboard as #{this.props.rank}!</h3>
+        <h3>Congratulations! You'll join the {difficultyCapitalized} Leaderboard as #{this.props.rank}!</h3>
         <form onSubmit={this.submitHandler} className="leader-form">
         <h3>Enter your initials...</h3>
           <label htmlFor="initials">Initials:</label>

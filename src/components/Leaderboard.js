@@ -1,75 +1,113 @@
 import React, { Component } from 'react';
 import LeaderForm from './LeaderForm';
-import LeaderList from './LeaderList';
+import LeaderLists from './LeaderLists';
+import DifficultySelector from './DifficultySelector';
 
-let highScores = [];
+let highScoreLists = {};
 class Leaderboard extends Component {
   constructor(props){
     super(props);
     this.state = {
-      highScores: highScores,
-      isHighScore: false,
+      highScoreLists: highScoreLists,
+      renderForm: false,
       newHighScoreIndex: null,
       formSubmitted: false
     }
     this.submitForm = this.submitForm.bind(this);
+    this.changeDifficulty = this.changeDifficulty.bind(this);
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.score) {
-      this.compareScore(nextProps.score);
+  componentDidUpdate(prevProps) {
+    if (prevProps.score !== this.props.score) {
+      this.checkLeaderlist(this.props.score);
     }
   }
   componentWillUnmount() {
-    highScores = this.state.highScores;
+    highScoreLists = this.state.highScoreLists;
+  }
+  checkLeaderlist(score){
+    if (this.state.highScoreLists[this.props.difficulty]) {
+      this.compareScore(score);
+    } else {
+      this.createLeaderList();
+    }
+  }
+  createLeaderList(){
+    let lists = this.state.highScoreLists;
+    lists[this.props.difficulty] = [];
+    this.setState({
+      highScoreLists: lists,
+      renderForm: true,
+      newHighScoreIndex: 0
+    });
   }
   compareScore(score){
-    let scores = this.state.highScores;
-    if (scores.some(leaderScore => score < leaderScore.score)) {
-      for (let i = 0; i < scores.length; i++) {
-        if (score < scores[i].score) {
+    let leaderScores = this.state.highScoreLists[this.props.difficulty];
+    if (leaderScores.some(leaderScore => score < leaderScore.score)) {
+      for (let i = 0; i < leaderScores.length; i++) {
+        if (score < leaderScores[i].score) {
           this.setState({
             newHighScoreIndex: i,
-            isHighScore: true
+            renderForm: true
           });
           break;
         }
       }
-    } else if (scores.length < 10) {
+    } else if (leaderScores.length < 10) {
       this.setState({
-        isHighScore: true,
-        newHighScoreIndex: scores.length
+        renderForm: true,
+        newHighScoreIndex: leaderScores.length
       });
     }
   }
   submitForm(data) {
-    let scores = [...this.state.highScores];
-    let top10;
-    if (scores.length) {
-      scores.splice(this.state.newHighScoreIndex,0,{score: this.props.score, name: data});
-      top10 = scores.slice(0,10);
-    } else {
-      scores.push({score: this.props.score, name: data});
-      top10 = scores;
-    }
+    let lists = this.state.highScoreLists;
+    let scores = lists[this.props.difficulty];
+    scores.splice(this.state.newHighScoreIndex,0,{score: this.props.score, name: data});
+    let top10 = scores.slice(0,10);
+    lists[this.props.difficulty] = top10;
     this.setState({
-      highScores: top10,
-      isHighScore: false,
+      highScoreLists: lists,
+      renderForm: false,
       formSubmitted: true
     });
+    this.props.changeDifficultySelect("difficultyMutable", true);
+  }
+  changeDifficulty(e){
+    this.props.changeDifficultySelect("difficulty", e.target.value);
+  }
+  renderForm(){
+    if (this.state.renderForm) {
+      return <LeaderForm onSubmit={this.submitForm}
+                         rank={this.state.newHighScoreIndex + 1}
+                         difficulty={this.props.difficulty} />;
+    } else {
+      return (!this.state.formSubmitted && <h3>Your score wasn't fast enough for the leaderboard.  Good luck next time.</h3>
+      );
+    }
+  }
+  renderList(){
+    if (Object.keys(this.state.highScoreLists).length) {
+      return <LeaderLists difficulty={this.props.difficulty}
+                         index={this.state.newHighScoreIndex}
+                         highScoreLists={this.state.highScoreLists} />;
+    } else {
+      return <h3>The Leaderboards are currently empty.  Join the Leaderboards by completing one of the games!</h3>;
+    }
+  }
+  renderDifficultySelect(){
+    return (
+      <div>
+        <h3>Optionally, before you play again, you can change the difficulty level:</h3>
+        <DifficultySelector handleDifficulty={this.changeDifficulty} difficulty={this.props.difficulty} />
+      </div>
+    );
   }
   render() {
     return (
       <div>
-        {this.props.score && (this.state.isHighScore ?
-          <LeaderForm onSubmit={this.submitForm} rank={this.state.newHighScoreIndex + 1} /> :
-          this.state.formSubmitted ?
-            <h3>Here's the new leaderboard:</h3> :
-            <h3>Your score wasn't fast enough for the leaderboard.  Good luck next time.</h3>
-        )}
-        {!this.state.isHighScore && (this.state.highScores.length ?
-          <LeaderList index={this.state.newHighScoreIndex} highScores={this.state.highScores} /> :
-          <h3>The Leaderboard is currently empty.  Join the Leaderboard by completing the game!</h3>
-        )}
+        {this.props.score && this.renderForm()}
+        {!this.state.renderForm && this.renderList()}
+        {!this.state.renderForm && this.props.difficultyMutable && this.renderDifficultySelect()}
       </div>
     );
   }
