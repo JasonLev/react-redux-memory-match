@@ -18,7 +18,7 @@ class Timer extends Component {
   }
   onFinish() {
     if (!this.state.scoreUpdated) {
-      this.props.changeScore(this.state.time);
+      this.props.changeScore("score",this.state.time);
       this.onPause();
       this.setState({
         scoreUpdated: true

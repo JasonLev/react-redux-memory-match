@@ -27,6 +27,13 @@
   font-size: 5em;
 }
 
+.difficulty-row {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+.difficulty-row>label {
+  margin-right: 1em;
+}
 /* Game Board: */
 main {
   width: 600px;

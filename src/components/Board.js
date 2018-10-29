@@ -14,39 +14,54 @@ import queen from '../img/queen_diamond.png';
 class Board extends Component {
   constructor(props){
     super(props);
+    this.cardCollection = [{value: "ace", img: ace, flipped: false},
+      {value: "ace", img: ace, flipped: false},
+      {value: "deuce", img: twoSpade, flipped: false},
+      {value: "deuce", img: twoSpade, flipped: false},
+      {value: "four", img: fourHeart, flipped: false},
+      {value: "four", img: fourHeart, flipped: false},
+      {value: "seven", img: sevenSpade, flipped: false},
+      {value: "seven", img: sevenSpade, flipped: false},
+      {value: "nine", img: nineClub, flipped: false},
+      {value: "nine", img: nineClub, flipped: false},
+      {value: "jack", img: jack, flipped: false},
+      {value: "jack", img: jack, flipped: false},
+      {value: "queen", img: queen, flipped: false},
+      {value: "queen", img: queen, flipped: false},
+      {value: "king", img: king, flipped: false},
+      {value: "king", img: king, flipped: false}]
     this.state = {
-      squares: [{value: "ace", img: ace, flipped: false},
-        {value: "ace", img: ace, flipped: false},
-        // {value: "deuce", img: twoSpade, flipped: false},
-        // {value: "deuce", img: twoSpade, flipped: false},
-        // {value: "four", img: fourHeart, flipped: false},
-        // {value: "four", img: fourHeart, flipped: false},
-        // {value: "seven", img: sevenSpade, flipped: false},
-        // {value: "seven", img: sevenSpade, flipped: false},
-        // {value: "nine", img: nineClub, flipped: false},
-        // {value: "nine", img: nineClub, flipped: false},
-        // {value: "jack", img: jack, flipped: false},
-        // {value: "jack", img: jack, flipped: false},
-        // {value: "queen", img: queen, flipped: false},
-        // {value: "queen", img: queen, flipped: false},
-        {value: "king", img: king, flipped: false},
-        {value: "king", img: king, flipped: false}],
+      squares: this.cardCollection,
       guess: null
     }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.gameStage === "started") {
-      // hide and shuffle the cards:
-      const squares = this.state.squares;
-      squares.forEach(square => {
-        square.flipped = false;
-      });
-      for (let i = squares.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [squares[i], squares[j]] = [squares[j], squares[i]];
-      }
-      this.setState({squares: squares, guess: null});
+      this.setupBoard();
     }
+  }
+  setupBoard(){
+    let boardSize;
+    switch (this.props.difficulty) {
+      case "easy":
+        boardSize = 8
+        break;
+      case "medium":
+        boardSize = 12
+        break;
+      default:
+        boardSize = 16
+    }
+    const squares = this.cardCollection.slice(0,boardSize);
+    // hide and shuffle the cards:
+    squares.forEach(square => {
+      square.flipped = false;
+    });
+    for (let i = squares.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [squares[i], squares[j]] = [squares[j], squares[i]];
+    }
+    this.setState({squares: squares, guess: null});
   }
   squareClick(i){
     if (!this.state.squares[i].flipped) {
@@ -87,7 +102,7 @@ class Board extends Component {
   }
   checkFinish(){
     if (this.state.squares.every(card => card.flipped === true)) {
-      this.props.finish("finished");
+      this.props.finish("stage","finished");
     };
   }
   render() {
@@ -107,13 +122,13 @@ class Board extends Component {
         main = (<div>
                   <h2>Game Paused.</h2>
                   <h3>Press "Resume Game" to continue.  Press "Reset" to Start Over.</h3>
-                  <Leaderboard score={null} />
+                  <Leaderboard score={null} difficulty={this.props.difficulty}/>
                 </div>
                );
         break;
       case "finished":
         main = (<div>
-                  <Leaderboard score={this.props.score} />
+                  <Leaderboard score={this.props.score} difficulty={this.props.difficulty}/>
                   <h2>Press "Play Again" to try for a better score.</h2>
                 </div>
                );
@@ -121,7 +136,7 @@ class Board extends Component {
       default:
         main = (<div>
                   <h2>Press "Start Game" to begin.</h2>
-                  <Leaderboard score={null} />
+                  <Leaderboard score={null} difficulty={null}/>
                 </div>
                );
     }
