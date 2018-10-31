@@ -2,21 +2,23 @@ import React, { Component } from 'react';
 import './App.css';
 import Board from './components/Board';
 import GameHeader from './components/GameHeader';
+import Difficulty from './enums';
+
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       stage: null,
-      difficulty: "easy",
+      difficulty: Object.keys(Difficulty)[0],
       score: null,
       difficultyMutable: false
     }
     this.changeGame = this.changeGame.bind(this);
   }
-  changeGame(k,v){
+  changeGame(stateKey,value){
     this.setState({
-      [k]: v
+      [stateKey]: value
     })
   }
   render() {
