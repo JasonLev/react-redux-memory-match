@@ -1,12 +1,8 @@
 import React from 'react';
+import Difficulty from '../enums';
 
 function DifficultySelector(props) {
-  const difficulty = {
-    easy: "Easy",
-    medium: "Medium",
-    hard:  "Hard"
-  }
-  const options = Object.entries(difficulty)
+  const options = Object.entries(Difficulty)
                         .map(([k,v], i) => {
                           return (
                             <option value={k} key={i}>{v}</option>

@@ -1,7 +1,10 @@
 import React from 'react';
 import LeaderList from './LeaderList';
+import Difficulty from '../enums';
 
 function LeaderLists(props) {
+  //jdl tbd
+  // const enumOrderedLists = Object.entries(props.highScoreLists)  ***come back to reorder this
   let allList = Object.entries(props.highScoreLists)
                       // .sort()
                       .map(
