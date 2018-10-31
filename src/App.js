@@ -8,15 +8,18 @@ class App extends Component {
     super(props);
     this.state = {
       stage: null,
-      difficulty: "easy",
+      difficulty: {
+        level:"easy",
+        priority: 1
+      },
       score: null,
       difficultyMutable: false
     }
     this.changeGame = this.changeGame.bind(this);
   }
-  changeGame(k,v){
+  changeGame(stateKey,value){
     this.setState({
-      [k]: v
+      [stateKey]: value
     })
   }
   render() {

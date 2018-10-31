@@ -2,7 +2,9 @@ import React from 'react';
 import LeaderList from './LeaderList';
 
 function LeaderLists(props) {
-  let allList = Object.entries(props.highScoreLists).map(
+  let allList = Object.entries(props.highScoreLists)
+                      // .sort()
+                      .map(
     ([difficultyLevel, scores], i) => {
       let diffLevelCapitalized = difficultyLevel[0].toUpperCase() + difficultyLevel.slice(1);
       return (
