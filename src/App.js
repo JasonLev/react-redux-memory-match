@@ -4,7 +4,6 @@ import Board from './components/Board';
 import GameHeader from './components/GameHeader';
 import Difficulty from './enums';
 
-
 class App extends Component {
   constructor(props){
     super(props);

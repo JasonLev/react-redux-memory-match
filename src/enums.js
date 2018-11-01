@@ -1,3 +1,3 @@
-const Difficulty = {easy: "Easy", medium: "Medium", hard:  "Hard"};
+const Difficulty = {easy: 0, medium: 1, hard: 2};
 
 export default Difficulty;

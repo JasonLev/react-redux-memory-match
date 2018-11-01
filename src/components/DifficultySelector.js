@@ -2,10 +2,12 @@ import React from 'react';
 import Difficulty from '../enums';
 
 function DifficultySelector(props) {
-  const options = Object.entries(Difficulty)
-                        .map(([k,v], i) => {
+  const options = Object.keys(Difficulty)
+                        .map((level, i) => {
                           return (
-                            <option value={k} key={i}>{v}</option>
+                            <option value={level} key={i}>
+                              {level[0].toUpperCase() + level.slice(1)}
+                            </option>
                           )
                         });
   return (
