@@ -34,10 +34,13 @@ class Leaderboard extends Component {
   }
   createLeaderList(){
     let lists = this.state.highScoreLists;
-    lists[this.props.difficulty] = [];
     let listsKeyArr = Object.keys(lists);
-    if (listsKeyArr.length > 1) {
-      lists = this.listsOrder(lists, listsKeyArr);
+    let difficultyKeysArr = Object.keys(Difficulty);
+    if (listsKeyArr.length &&
+        this.props.difficulty !== difficultyKeysArr[difficultyKeysArr.length -1]) {
+      lists = this.sortListsOrder(lists, listsKeyArr);
+    } else {
+      lists[this.props.difficulty] = [];
     }
     this.setState({
       highScoreLists: lists,
@@ -45,17 +48,17 @@ class Leaderboard extends Component {
       newHighScoreIndex: 0
     });
   }
-  listsOrder(lists, listArr){
-    let temp;
-    for (let i = 0; i < listArr.length - 1; i++) {
-      if (Difficulty[listArr[i]] > Difficulty[listArr[i + 1]]) {
-        temp = listArr[i];
-        listArr[i] = listArr[i + 1];
-        listArr[i + 1] = temp;
-        console.log(listArr);
-        return;
+  sortListsOrder(lists, listArr){
+    for (let i = 0; i < listArr.length; i++) {
+      if (Difficulty[this.props.difficulty] < Difficulty[listArr[i]]) {
+        listArr.splice(i, 0, this.props.difficulty);
+        let sortedLists = {};
+        lists[this.props.difficulty] = [];
+        listArr.forEach(list => {sortedLists[list] = lists[list]});
+        return sortedLists;
       }
     }
+    lists[this.props.difficulty] = [];
     return lists;
   }
   compareScore(score){
