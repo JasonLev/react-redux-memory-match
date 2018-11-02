@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LeaderForm from './LeaderForm';
 import LeaderLists from './LeaderLists';
 import DifficultySelector from './DifficultySelector';
+import Difficulty from '../constants/enum-difficulty';
 
 let highScoreLists = {};
 class Leaderboard extends Component {
@@ -33,12 +34,32 @@ class Leaderboard extends Component {
   }
   createLeaderList(){
     let lists = this.state.highScoreLists;
-    lists[this.props.difficulty] = [];
+    let listsKeyArr = Object.keys(lists);
+    let difficultyKeysArr = Object.keys(Difficulty);
+    if (listsKeyArr.length &&
+        this.props.difficulty !== difficultyKeysArr[difficultyKeysArr.length -1]) {
+      lists = this.sortListsOrder(lists, listsKeyArr);
+    } else {
+      lists[this.props.difficulty] = [];
+    }
     this.setState({
       highScoreLists: lists,
       renderForm: true,
       newHighScoreIndex: 0
     });
+  }
+  sortListsOrder(lists, listArr){
+    for (let i = 0; i < listArr.length; i++) {
+      if (Difficulty[this.props.difficulty] < Difficulty[listArr[i]]) {
+        listArr.splice(i, 0, this.props.difficulty);
+        let sortedLists = {};
+        lists[this.props.difficulty] = [];
+        listArr.forEach(list => {sortedLists[list] = lists[list]});
+        return sortedLists;
+      }
+    }
+    lists[this.props.difficulty] = [];
+    return lists;
   }
   compareScore(score){
     let leaderScores = this.state.highScoreLists[this.props.difficulty];
