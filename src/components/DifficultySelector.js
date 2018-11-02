@@ -1,5 +1,5 @@
 import React from 'react';
-import Difficulty from '../enums';
+import Difficulty from '../constants/enum-difficulty';
 
 function DifficultySelector(props) {
   const options = Object.keys(Difficulty)

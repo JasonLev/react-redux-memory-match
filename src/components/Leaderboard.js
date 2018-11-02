@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LeaderForm from './LeaderForm';
 import LeaderLists from './LeaderLists';
 import DifficultySelector from './DifficultySelector';
-import Difficulty from '../enums';
+import Difficulty from '../constants/enum-difficulty';
 
 let highScoreLists = {};
 class Leaderboard extends Component {
