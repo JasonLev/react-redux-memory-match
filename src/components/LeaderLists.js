@@ -8,7 +8,7 @@ function LeaderLists(props) {
       return (
         <li key={i} className={difficultyLevel === props.difficulty ? "current-leaderlist" : undefined}>
           <h4>{diffLevelCapitalized}:</h4>
-          <LeaderList scores={scores} index={difficultyLevel === props.difficulty ? props.index : undefined}/>
+          <LeaderList scores={scores} index={difficultyLevel === props.currentList && props.index}/>
         </li>
       );
   });

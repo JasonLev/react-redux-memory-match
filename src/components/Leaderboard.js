@@ -12,6 +12,7 @@ class Leaderboard extends Component {
       highScoreLists: highScoreLists,
       renderForm: false,
       newHighScoreIndex: null,
+      currentList: null,
       formSubmitted: false
     }
     this.submitForm = this.submitForm.bind(this);
@@ -89,6 +90,7 @@ class Leaderboard extends Component {
     this.setState({
       highScoreLists: lists,
       renderForm: false,
+      currentList: this.props.difficulty,
       formSubmitted: true
     });
     this.props.changeDifficultySelect("difficultyMutable", true);
@@ -110,6 +112,7 @@ class Leaderboard extends Component {
     if (Object.keys(this.state.highScoreLists).length) {
       return <LeaderLists difficulty={this.props.difficulty}
                          index={this.state.newHighScoreIndex}
+                         currentList={this.state.currentList}
                          highScoreLists={this.state.highScoreLists} />;
     } else {
       return <h3>The Leaderboards are currently empty.  Join the Leaderboards by completing one of the games!</h3>;
